@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:http/http.dart';
@@ -238,7 +239,6 @@ class _PlacesAutocompleteResult extends State<PlacesAutocompleteResult> {
   @override
   Widget build(BuildContext context) {
     final state = PlacesAutocompleteWidget.of(context)!;
-    assert(state != null);
 
     if (state._queryTextController!.text.isEmpty ||
         state._response == null ||
@@ -276,7 +276,6 @@ class _AppBarPlacesAutoCompleteTextFieldState extends State<AppBarPlacesAutoComp
   @override
   Widget build(BuildContext context) {
     final state = PlacesAutocompleteWidget.of(context)!;
-    assert(state != null);
 
     return Container(
         alignment: Alignment.topLeft,
@@ -364,7 +363,8 @@ class PredictionTile extends StatelessWidget {
       onTap: () {
         if (onTap != null) {
           onTap!(prediction);
-          controller?.text = '';
+          FocusManager.instance.primaryFocus?.unfocus();
+          SystemChannels.textInput.invokeMethod('TextInput.hide');
         }
       },
     );
