@@ -2,7 +2,6 @@ library flutter_google_places.src;
 
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_api_headers/google_api_headers.dart';
@@ -339,11 +338,17 @@ class PredictionsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = PlacesAutocompleteWidget.of(context)!;
-    return ListView(
-      children: predictions
-          .map((Prediction p) =>
-              PredictionTile(prediction: p, onTap: onTap, controller: state._queryTextController))
-          .toList(),
+    return Wrap(
+      children: [
+        Container(
+          child: ListView(
+            children: predictions
+                .map((Prediction p) => PredictionTile(
+                    prediction: p, onTap: onTap, controller: state._queryTextController))
+                .toList(),
+          ),
+        ),
+      ],
     );
   }
 }
