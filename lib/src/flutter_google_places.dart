@@ -90,7 +90,7 @@ class _PlacesAutocompleteScaffoldState extends PlacesAutocompleteState {
       onTap: Navigator.of(context).pop,
       logo: widget.logo,
     );
-    
+
     return Scaffold(appBar: appBar, body: body);
   }
 }
@@ -240,9 +240,7 @@ class _PlacesAutocompleteResult extends State<PlacesAutocompleteResult> {
   Widget build(BuildContext context) {
     final state = PlacesAutocompleteWidget.of(context)!;
 
-    if (state._queryTextController!.text.isEmpty ||
-        state._response == null ||
-        state._response!.predictions.isEmpty) {
+    if (state._response == null || state._response!.predictions.isEmpty) {
       final children = <Widget>[];
       if (state._searching) {
         children.add(_Loader());
@@ -250,6 +248,9 @@ class _PlacesAutocompleteResult extends State<PlacesAutocompleteResult> {
       children.add(widget.logo ?? PoweredByGoogleImage());
       return Stack(children: children);
     }
+
+    FocusManager.instance.primaryFocus?.unfocus();
+    
     return PredictionsListView(
       predictions: state._response!.predictions,
       onTap: widget.onTap,
@@ -339,6 +340,7 @@ class PredictionsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = PlacesAutocompleteWidget.of(context)!;
+    FocusManager.instance.primaryFocus?.unfocus();
     return Wrap(
       children: [
         Container(
